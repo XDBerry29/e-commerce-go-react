@@ -17,6 +17,9 @@ func NewUserService(userRepository repositories.UserRepository) *UserService {
 }
 
 func (userService *UserService) RegisterUser(name string, email string, password string, role string) error {
+	if err := utils.ValidatePassword(password); err != nil {
+		return err
+	}
 	hashPassword, err := utils.HashPassword(password)
 	if err != nil {
 		return err
