@@ -1,22 +1,24 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/XDBerry29/e-commerce-go+react/domain/models"
 	"github.com/XDBerry29/e-commerce-go+react/repositories"
 	"github.com/XDBerry29/e-commerce-go+react/utils"
 )
 
-type UserService struct {
+type AuthService struct {
 	userRepository repositories.UserRepository
 }
 
-func NewUserService(userRepository repositories.UserRepository) *UserService {
-	return &UserService{
+func NewAuthService(userRepository repositories.UserRepository) *AuthService {
+	return &AuthService{
 		userRepository: userRepository,
 	}
 }
 
-func (userService *UserService) RegisterUser(name string, email string, password string, role string) error {
+func (authService *AuthService) RegisterUser(name string, email string, password string, role string) error {
 	if err := utils.ValidatePassword(password); err != nil {
 		return err
 	}
@@ -27,11 +29,29 @@ func (userService *UserService) RegisterUser(name string, email string, password
 
 	user := models.NewUser(name, email, hashPassword, role)
 
-	err = userService.userRepository.CreateUser(user)
+	err = authService.userRepository.CreateUser(user)
 	if err != nil {
 		return err
 	}
 
 	return nil
 
+}
+
+func (authService *AuthService) AuthUser(email string, password string) (string, error) {
+	user, err := authService.userRepository.FindUserByEmail(email)
+	if err != nil {
+		return "", err
+	}
+	if err = user.CheckPassword(password); err != nil {
+		return "", err
+	}
+
+	jwt, err := utils.GerateJWT(user.GetID(), user.GetRole())
+	if err != nil {
+		fmt.Printf("AICI\n")
+		return "", err
+	}
+
+	return jwt, nil
 }

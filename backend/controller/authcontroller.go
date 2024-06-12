@@ -8,16 +8,16 @@ import (
 )
 
 type AuthController struct {
-	UserService *service.UserService
+	AuthService *service.AuthService
 }
 
-func NewAuthController(userService *service.UserService) *AuthController {
+func NewAuthController(authService *service.AuthService) *AuthController {
 	return &AuthController{
-		UserService: userService,
+		AuthService: authService,
 	}
 }
 
-func (ctrl *AuthController) Register(c echo.Context) error {
+func (authController *AuthController) Register(c echo.Context) error {
 	var input struct {
 		Name     string `json:"name" validate:"required"`
 		Email    string `json:"email" validate:"required,email"`
@@ -28,9 +28,27 @@ func (ctrl *AuthController) Register(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
-	if err := ctrl.UserService.RegisterUser(input.Name, input.Email, input.Password, input.Role); err != nil {
+	if err := authController.AuthService.RegisterUser(input.Name, input.Email, input.Password, input.Role); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{"message": "User registered successfully"})
+}
+
+func (authController *AuthController) Login(c echo.Context) error {
+	var input struct {
+		Email    string `json:"email" validate:"required,email"`
+		Password string `json:"password" validate:"required"`
+	}
+
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
+	jwt, err := authController.AuthService.AuthUser(input.Email, input.Password)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "Login succesfull!", "jwt": jwt})
 }

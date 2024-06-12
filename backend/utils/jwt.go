@@ -26,7 +26,7 @@ func GerateJWT(userID uuid.UUID, role string) (string, error) {
 
 	var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	return token.SignedString(jwtKey)
 

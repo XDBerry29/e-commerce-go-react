@@ -31,8 +31,8 @@ func main() {
 
 	//INITIATE THE INSTANCES OF THE APP
 	userRepo := repositories.NewUserRepository(db)
-	userService := service.NewUserService(userRepo)
-	authController := controller.NewAuthController(userService)
+	authService := service.NewAuthService(userRepo)
+	authController := controller.NewAuthController(authService)
 	routes.AuthRoutes(e, authController)
 
 	PORT := os.Getenv("PORT")
