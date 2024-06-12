@@ -14,16 +14,16 @@ The goal of this project is to build a fully functional e-commerce website that 
 
 #### 1. User Authentication and Management
 - **User Registration:**
-  - Allow users to sign up with email and password.
-  - Validate email format and password strength.
-  - Store hashed passwords in the database.
+  - Allow users to sign up with email and password.(done)
+  - Validate email format and password strength.(done)
+  - Store hashed passwords in the database.(done)
 
 - **User Login:**
-  - Allow users to log in with their email and password.
-  - Implement JWT for session management.
-  - Provide secure routes for authenticated users.
+  - Allow users to log in with their email and password.(done)
+  - Implement JWT for session management.(done)
+  - Provide secure routes for authenticated users.(#TODO)
 
-- **Profile Management:**
+- **Profile Management:** (TODO)
   - Allow users to view and update their profile information.
   - Provide options to change password and update contact information.
 

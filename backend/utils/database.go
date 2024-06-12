@@ -26,7 +26,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 	}
 
 	// Automatically migrate user model into the db
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.User{}, &models.Product{})
 	if err != nil {
 		log.Fatalf("Error migrating database: %v", err)
 	}

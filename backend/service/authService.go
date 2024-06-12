@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/XDBerry29/e-commerce-go+react/domain/models"
 	"github.com/XDBerry29/e-commerce-go+react/repositories"
 	"github.com/XDBerry29/e-commerce-go+react/utils"
@@ -49,7 +47,6 @@ func (authService *AuthService) AuthUser(email string, password string) (string,
 
 	jwt, err := utils.GerateJWT(user.GetID(), user.GetRole())
 	if err != nil {
-		fmt.Printf("AICI\n")
 		return "", err
 	}
 
