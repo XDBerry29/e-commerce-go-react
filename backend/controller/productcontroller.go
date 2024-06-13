@@ -27,5 +27,19 @@ func (productController *ProductController) AddProduct(c echo.Context) error {
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
-	return c.JSON(http.StatusNotImplemented, map[string]string{"message": "Not Implemented yet!"})
+	if err := productController.productService.AddProduct(input.Name, input.Description, input.Photo, input.Stock); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "Product added successfully"})
+}
+
+func (productController *ProductController) GetProducts(c echo.Context) error {
+	products, err := productController.productService.GetAllProducts()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, products)
+
 }
