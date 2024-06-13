@@ -19,5 +19,8 @@ func ProductRoutes(e *echo.Echo, productController *controller.ProductController
 	admin.Use(middleware.AdminOnly)
 
 	admin.POST("/product", productController.AddProduct)
+	admin.GET("/products", productController.GetProductsAdmin)
+	admin.DELETE("/product", productController.DeleteProduct)
+	admin.PUT("/product", productController.ModifyProduct)
 
 }

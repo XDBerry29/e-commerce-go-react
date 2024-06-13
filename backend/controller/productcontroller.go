@@ -43,3 +43,20 @@ func (productController *ProductController) GetProducts(c echo.Context) error {
 	return c.JSON(http.StatusOK, products)
 
 }
+
+func (productController *ProductController) GetProductsAdmin(c echo.Context) error {
+	products, err := productController.productService.GetAllProductsAdmin()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, products)
+}
+
+func (productController *ProductController) DeleteProduct(c echo.Context) error {
+	return c.JSON(http.StatusNotImplemented, map[string]string{"message": "Not Implemented yes!"})
+}
+
+func (productController *ProductController) ModifyProduct(c echo.Context) error {
+	return c.JSON(http.StatusNotImplemented, map[string]string{"message": "Not Implemented yes!"})
+}
